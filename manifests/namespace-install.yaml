@@ -955,7 +955,7 @@ spec:
         - server
         - --namespaced
         env: []
-        image: docker.io/greenopsinc/argocli:latest
+        image: greenopsinc/argo-server:3.3.8
         name: argo-server
         ports:
         - containerPort: 2746

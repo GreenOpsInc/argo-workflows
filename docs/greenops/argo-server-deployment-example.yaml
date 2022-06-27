@@ -14,7 +14,7 @@ spec:
       serviceAccountName: argo-server
       containers:
         - name: argo-server
-          image: docker.io/greenopsinc/argocli:latest
+          image: greenopsinc/argo-server:3.3.8
           imagePullPolicy: Never
           securityContext:
             readOnlyRootFilesystem: true
@@ -30,6 +30,8 @@ spec:
             - sso
             - --auth-mode
             - client
+            - --access-control-allow-origin
+            - "*"
           env: []
           ports:
             - name: web

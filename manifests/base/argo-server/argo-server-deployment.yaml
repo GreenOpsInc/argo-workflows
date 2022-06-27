@@ -14,7 +14,7 @@ spec:
       serviceAccountName: argo-server
       containers:
         - name: argo-server
-          image: docker.io/greenopsinc/argocli:latest
+          image: greenopsinc/argo-server:3.3.8
           securityContext:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
