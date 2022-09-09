@@ -11,7 +11,7 @@ const logout = () => {
 };
 const user = (token: string) => {
     const path = uiUrl('');
-    document.cookie = 'authorization=' + token + ';SameSite=Strict;path=' + path;
+    document.cookie = 'authorization=' + token + ';SameSite=None;Secure=true;path=' + path;
     document.location.href = path;
 };
 const getRedirect = (): string => {
