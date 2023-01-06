@@ -3,7 +3,12 @@ package static
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
+)
+
+const (
+	frameAncestorEnvVarName = "FRAME_ANCESTOR"
 )
 
 type FilesServer struct {
@@ -29,9 +34,9 @@ func (s *FilesServer) ServerFiles(w http.ResponseWriter, r *http.Request) {
 		w = &responseRewriter{ResponseWriter: w, old: []byte(`<base href="/">`), new: []byte(fmt.Sprintf(`<base href="%s">`, s.baseHRef))}
 	}
 
-	if s.xframeOpts != "" {
-		w.Header().Set("X-Frame-Options", s.xframeOpts)
-	}
+	//if s.xframeOpts != "" {
+	//	w.Header().Set("X-Frame-Options", s.xframeOpts)
+	//}
 
 	if s.corsAllowOrigin != "" {
 		w.Header().Set("Access-Control-Allow-Origin", s.corsAllowOrigin)
@@ -44,8 +49,10 @@ func (s *FilesServer) ServerFiles(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	frameAncestor := os.Getenv(frameAncestorEnvVarName)
 	// `data:` is need for Monaco editors wiggly red lines
-	w.Header().Set("Content-Security-Policy", "default-src 'self' 'unsafe-inline'; img-src 'self' data:")
+	csp := fmt.Sprintf("default-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors %s", frameAncestor)
+	w.Header().Set("Content-Security-Policy", csp)
 	if s.hsts {
 		w.Header().Set("Strict-Transport-Security", "max-age=31536000")
 	}

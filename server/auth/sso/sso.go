@@ -12,9 +12,10 @@ import (
 	"strings"
 	"time"
 
+	"gopkg.in/square/go-jose.v2"
+
 	pkgrand "github.com/argoproj/pkg/rand"
 	"github.com/coreos/go-oidc/v3/oidc"
-	"github.com/go-jose/go-jose/v3"
 	"github.com/go-jose/go-jose/v3/jwt"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/oauth2"
@@ -324,8 +325,8 @@ func (s *sso) HandleCallback(w http.ResponseWriter, r *http.Request) {
 		Name:     "authorization",
 		Path:     s.baseHRef,
 		Expires:  time.Now().Add(s.expiry),
-		SameSite: http.SameSiteStrictMode,
-		Secure:   s.secure,
+		SameSite: http.SameSiteNoneMode,
+		Secure:   true,
 	})
 	redirect := s.baseHRef
 
