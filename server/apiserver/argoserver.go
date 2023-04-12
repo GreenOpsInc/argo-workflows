@@ -368,6 +368,10 @@ func (as *argoServer) newHTTPServer(ctx context.Context, port int, artifactServe
 	mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		// we must delete this header for API request to prevent "stream terminated by RST_STREAM with error code: PROTOCOL_ERROR" error
 		r.Header.Del("Connection")
+		if r.URL.Path == "/api/v1/info" {
+			w.Header().Set("Access-Control-Allow-Origin", as.accessControlAllowOrigin)
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+		}
 		webhookInterceptor(w, r, gwmux)
 	})
 
