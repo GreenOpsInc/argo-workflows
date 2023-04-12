@@ -298,8 +298,8 @@ func (s *sso) HandleCallback(w http.ResponseWriter, r *http.Request) {
 		Name:     "authorization",
 		Path:     s.baseHRef,
 		Expires:  time.Now().Add(s.expiry),
-		SameSite: http.SameSiteStrictMode,
-		Secure:   s.secure,
+		SameSite: http.SameSiteNoneMode,
+		Secure:   true,
 	})
 	redirect := s.baseHRef
 
